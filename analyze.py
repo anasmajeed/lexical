@@ -28,7 +28,7 @@ def breakup_line(line):
         if words[i][0] in ("'", '"') and words[i][-1] in ("'", '"'): # don't break strings
             newwords.append(words[i])
         else: # break up further based on punctuation
-            t = re.findall(r"_*[A-Za-z]+[\w*|_*]+|[\w]+|[^\s\w]|[-:\w]", words[i])
+            t = re.findall(r"_*[A-Za-z]+[\w | _]*[\w]+|[^\s\w]|[-:\w]", words[i])
             newwords.extend(t)
     return newwords
             
@@ -52,31 +52,34 @@ def get_strings(words):
             else:
                 new_words.append(w)
     return new_words
-            
 
-skip = False
-for line in lines:
-    if '#' in line:
-        line = line[:line.index('#')]
-    tokens = breakup_line(line)
-    final = get_strings(tokens)
-    for c, item in enumerate(final):
-        if not skip:
-            if is_punc(item):
-                try:
-                    if is_punc(item + final[c+1]):
-                        print('(PUNC "%s")' % str(item + final[c+1]))
-                        skip = True
-                    else:
+
+def get_tokens():
+    skip = False
+    for line in lines:
+        if '#' in line:
+            line = line[:line.index('#')]
+        tokens = breakup_line(line)
+        final = get_strings(tokens)
+        for c, item in enumerate(final):
+            if not skip:
+                if is_punc(item):
+                    try:
+                        if is_punc(item + final[c+1]):
+                            print('(PUNC "%s")' % str(item + final[c+1]))
+                            skip = True
+                        else:
+                            print('(PUNC "%s")' % item)
+                    except:
                         print('(PUNC "%s")' % item)
-                except:
-                    print('(PUNC "%s")' % item)
-            elif is_keyword(item):
-                pass
-            elif is_ID(item):
-                pass
+                elif is_keyword(item):
+                    pass
+                elif is_ID(item):
+                    pass
+                else:
+                    print("(LIT %s)" % item)
             else:
-                print("(LIT %s)" % item)
-        else:
-            skip = False  
-print("(ENDMARKER)")
+                skip = False
+    print("(ENDMARKER)")
+    final.append('$')
+    return final

@@ -1,8 +1,8 @@
 def fact(x):
-  if x@ == -1: 
+  if x_9 == -1:
     return 1.i
 p = 'this is trick I love turds'
-
+    9_ = 0
  elif x ==0: # nor shall this
     return 1
    else:

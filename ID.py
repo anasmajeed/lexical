@@ -23,7 +23,7 @@ def is_ID(a):
         return False
     except:
         pass
-	k =  all(i in digit or uppercase or lowercase for i in a)
-	if k:
-   		print '(ID "%s")' % a
-	return k
+    k = all(i in digit or uppercase or lowercase for i in a)
+    if k:
+   		print('(ID "%s")' % a)
+    return k
