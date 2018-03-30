@@ -4,30 +4,31 @@ from punct import puncList
 from keywords import is_keyword
 from ID import is_ID
 
+def e():
+    exit(1)
 
-myfile = raw_input()
+myfile = input()
 
 try:
     fin = open(myfile, 'r')
 except:
-    print "Input file does not exists: %s" % myfile
+    print("Input file does not exists: %s" % myfile)
     quit(0)
-
-
 
 lines = fin.readlines()
 if len(lines) <= 0:
-    print "Input file %s is empty" % myfile 
+    print("Input file %s is empty" % myfile)
     quit(0)
+
 
 def breakup_line(line):
     words = line.split()
     newwords = []
     for i in range(len(words)):
-        if words[i][0] in ("'",'"') and words[i][-1] in ("'",'"'): # don't break strings
+        if words[i][0] in ("'", '"') and words[i][-1] in ("'", '"'): # don't break strings
             newwords.append(words[i])
         else: # break up further based on punctuation
-            t = re.findall(r"[\w]+|[^\s\w]|[-:\w]", words[i])
+            t = re.findall(r"_*[A-Za-z]+[\w*|_*]+|[\w]+|[^\s\w]|[-:\w]", words[i])
             newwords.extend(t)
     return newwords
             
@@ -64,18 +65,18 @@ for line in lines:
             if is_punc(item):
                 try:
                     if is_punc(item + final[c+1]):
-                        print '(PUNC "%s")' % str(item + final[c+1])
+                        print('(PUNC "%s")' % str(item + final[c+1]))
                         skip = True
                     else:
-                        print '(PUNC "%s")' % item 
+                        print('(PUNC "%s")' % item)
                 except:
-                    print '(PUNC "%s")' % item 
+                    print('(PUNC "%s")' % item)
             elif is_keyword(item):
                 pass
             elif is_ID(item):
                 pass
             else:
-                print "(LIT %s)" % item
+                print("(LIT %s)" % item)
         else:
             skip = False  
-print "(ENDMARKER)"
+print("(ENDMARKER)")
